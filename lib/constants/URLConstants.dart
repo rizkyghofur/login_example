@@ -1,3 +1,3 @@
 class UrlConstants {
-  static const link = "https://rizkyghofur.xyz/api/monitoring_siswa/login.php";
+  static const link = "https://reqres.in/api/login";
 }

@@ -7,18 +7,8 @@ part of 'LoginResponse.dart';
 // **************************************************************************
 
 LoginResponse _$LoginResponseFromJson(Map<String, dynamic> json) {
-  return LoginResponse(
-    id: json['id'] as String,
-    success: json['success'] as String,
-    username: json['username'] as String,
-    role: json['role'] as String,
-  );
+  return LoginResponse(token: json['token'] as String);
 }
 
 Map<String, dynamic> _$LoginResponseToJson(LoginResponse instance) =>
-    <String, dynamic>{
-      'success': instance.success,
-      'id': instance.id,
-      'username': instance.username,
-      'role': instance.role,
-    };
+    <String, dynamic>{'token': instance.token};

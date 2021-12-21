@@ -1,6 +1,10 @@
 # login_example
 
-A new Flutter project.
+A new Flutter Login Demo project.
+
+Demo account for testing login demo:
+Email: eve.holt@reqres.in
+Password: cityslicka
 
 ## Getting Started
 

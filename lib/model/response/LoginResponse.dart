@@ -1,14 +1,12 @@
 import 'package:json_annotation/json_annotation.dart';
 
 part 'LoginResponse.g.dart';
+
 @JsonSerializable()
 class LoginResponse {
-  String success;
-  String id;
-  String username;
-  String role;
+  String token;
 
-  LoginResponse({this.id, this.success, this.username, this.role});
+  LoginResponse({this.token});
 
   Map<String, dynamic> toJson() => _$LoginResponseToJson(this);
 

@@ -4,6 +4,8 @@ import 'package:login_example/bloc/LoginBloc.dart';
 import 'package:login_example/component/customClipper.dart';
 import 'package:flutter/material.dart';
 import 'package:login_example/model/response/LoginResponse.dart';
+import 'package:login_example/model/sqliteModel.dart';
+import 'package:login_example/utils/SharedPrefs.dart';
 import 'HomePage.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -13,7 +15,37 @@ class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
 }
 
+Future<bool> checkLogin() async {
+  bool isUser;
+  await Pengguna().select().toSingle().then((Pengguna user) async {
+    if (user != null) {
+      isUser = true;
+    } else {
+      isUser = false;
+    }
+  });
+  return isUser;
+}
+
 class _LoginScreenState extends State<LoginScreen> {
+  final PreferencesUtil util = PreferencesUtil();
+
+  @override
+  void initState() {
+    super.initState();
+    checkLogin().then((value) {
+      if (value && util.isKeyExists(PreferencesUtil.name)) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HomeScreen(),
+          ),
+        );
+        print('An account has logged in');
+      }
+    });
+  }
+
   final LoginBloc loginBloc = LoginBloc();
   TextEditingController usernameController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
@@ -129,21 +161,31 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(height: height * .055),
                   GestureDetector(
                     onTap: () async {
-                      await loginBloc.getLogin(usernameController.text, passwordController.text).then((LoginResponse response){
-                        if(response.success == "1"){
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => HomeScreen(),
-                            ),
-                          );
-                        } else {
+                      await loginBloc
+                          .getLogin(
+                              usernameController.text, passwordController.text)
+                          .then((LoginResponse response) {
+                        try {
+                          if (response.token == null) {
+                            Fluttertoast.showToast(
+                                msg: "Invalid username/password",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.CENTER,
+                                timeInSecForIosWeb: 1);
+                          } else {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => HomeScreen(),
+                              ),
+                            );
+                          }
+                        } catch (e) {
                           Fluttertoast.showToast(
                               msg: "Invalid username/password",
                               toastLength: Toast.LENGTH_SHORT,
                               gravity: ToastGravity.CENTER,
-                              timeInSecForIosWeb: 1
-                          );
+                              timeInSecForIosWeb: 1);
                         }
                       });
                     },

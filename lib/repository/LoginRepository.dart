@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:login_example/constants/Constants.dart';
 import 'package:login_example/constants/UrlConstants.dart';
 import 'package:login_example/model/request/LoginRequest.dart';
 import 'package:login_example/model/response/LoginResponse.dart';
@@ -8,15 +7,15 @@ import 'package:login_example/utils/Injector.dart';
 class LoginRepository {
   final Dio dio = locator<Dio>();
 
-  Future<LoginResponse> getLogin(String username, String password) async {
+  Future<LoginResponse> getLogin(String email, String password) async {
     try {
       LoginRequest request = new LoginRequest();
-      request.username = username;
+      request.email = email;
       request.password = password;
 
-      dio.options.contentType = "application/x-www-form-urlencoded";
-      Response response = await dio.post(UrlConstants.link,
-          data: request.toJson());
+      dio.options.contentType = "application/json";
+      Response response =
+          await dio.post(UrlConstants.link, data: request.toJson());
 
       var map = Map<String, dynamic>.from(response.data);
       var fetchedResponse = LoginResponse.fromJson(map);

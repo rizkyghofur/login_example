@@ -1,6 +1,8 @@
+import 'package:login_example/model/sqliteModel.dart';
 import 'package:login_example/page/LoginPage.dart';
 import 'package:flutter/material.dart';
 import 'package:login_example/utils/SharedPrefs.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key key}) : super(key: key);
@@ -80,7 +82,9 @@ class HomeScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text("Welcome, " + util.getString(PreferencesUtil.name),
+                  Text(
+                      "Hi. Your token is " +
+                          util.getString(PreferencesUtil.name),
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
@@ -99,10 +103,25 @@ class HomeScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 60.0),
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LoginScreen()));
+                        AwesomeDialog(
+                          context: context,
+                          dialogType: DialogType.QUESTION,
+                          headerAnimationLoop: false,
+                          animType: AnimType.BOTTOMSLIDE,
+                          title: 'Log Out',
+                          desc: 'Are you sure want to log out?',
+                          buttonsTextStyle: TextStyle(color: Colors.black),
+                          showCloseIcon: true,
+                          btnCancelOnPress: () {},
+                          btnOkOnPress: () {
+                            Pengguna().select().delete();
+                            PreferencesUtil().clearAll();
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LoginScreen()));
+                          },
+                        )..show();
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width,
@@ -111,7 +130,7 @@ class HomeScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(5)),
                           border:
-                          Border.all(color: Color(0xff14279B), width: 2),
+                              Border.all(color: Color(0xff14279B), width: 2),
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
