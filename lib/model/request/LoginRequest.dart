@@ -6,8 +6,9 @@ part 'LoginRequest.g.dart';
 class LoginRequest {
   String email;
   String password;
+  String role;
 
-  LoginRequest({this.email, this.password});
+  LoginRequest({this.email, this.password, this.role});
 
   Map<String, dynamic> toJson() => _$LoginRequestToJson(this);
 

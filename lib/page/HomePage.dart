@@ -83,7 +83,7 @@ class HomeScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text(
-                      "Hi. Your token is " +
+                      "Hi. Your name is " +
                           util.getString(PreferencesUtil.name),
                       style: TextStyle(
                         fontSize: 20,

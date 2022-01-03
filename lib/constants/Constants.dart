@@ -1,3 +1,3 @@
 class Constants {
-  static const appName = "Login Example";
+  static const appName = "Auth Example";
 }

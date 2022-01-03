@@ -3,8 +3,11 @@
 A new Flutter Login Demo project.
 
 Demo account for testing login demo:
-Email: eve.holt@reqres.in
-Password: cityslicka
+Username: 081
+Password: anam123
+
+For adding new model in this project, please run the command after adding model:
+- flutter pub run build_runner watch --delete-conflicting-outputs
 
 ## Getting Started
 

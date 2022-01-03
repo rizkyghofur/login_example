@@ -1,21 +1,29 @@
 import 'package:dio/dio.dart';
 import 'package:login_example/constants/UrlConstants.dart';
-import 'package:login_example/model/request/LoginRequest.dart';
+import 'package:login_example/model/response/BaseResponse.dart';
 import 'package:login_example/model/response/LoginResponse.dart';
+import 'package:login_example/model/response/RegisterResponse.dart';
 import 'package:login_example/utils/Injector.dart';
 
-class LoginRepository {
+class AuthRepository {
   final Dio dio = locator<Dio>();
 
-  Future<LoginResponse> getLogin(String email, String password) async {
+  Future<LoginResponse> getLogin(String notelp, String password) async {
     try {
-      LoginRequest request = new LoginRequest();
-      request.email = email;
-      request.password = password;
+      // LoginRequest request = new LoginRequest();
+      // request.email = email;
+      // request.password = password;
 
-      dio.options.contentType = "application/json";
-      Response response =
-          await dio.post(UrlConstants.link, data: request.toJson());
+      // dio.options.contentType = "application/json";
+      // Response response =
+      //     await dio.post(UrlConstants.login, data: request.toJson());
+
+      Response response = await dio.post(UrlConstants.login +
+          "?no_telp=" +
+          notelp +
+          "&password=" +
+          password +
+          "&role=customer");
 
       var map = Map<String, dynamic>.from(response.data);
       var fetchedResponse = LoginResponse.fromJson(map);
@@ -25,6 +33,61 @@ class LoginRepository {
       throw Exception("Exception occured: $error stackTrace: $stacktrace");
     }
   }
+
+  Future<RegisterResponse> register(
+      String nama, String email, String notelp, String password) async {
+    try {
+      // LoginRequest request = new LoginRequest();
+      // request.email = email;
+      // request.password = password;
+
+      // dio.options.contentType = "application/json";
+      // Response response =
+      //     await dio.post(UrlConstants.login, data: request.toJson());
+      Response response = await dio.post(UrlConstants.register +
+          "?name=" +
+          nama +
+          "&password=" +
+          password +
+          "&email=" +
+          email +
+          "&no_telp=" +
+          notelp);
+
+      var map = Map<String, dynamic>.from(response.data);
+      var fetchedResponse = RegisterResponse.fromJson(map);
+
+      return fetchedResponse;
+    } catch (error, stacktrace) {
+      throw Exception("Exception occured: $error stackTrace: $stacktrace");
+    }
+  }
+
+  // Future<BaseResponse<LoginResponse>> getLogin(
+  //     String notelp, String password) async {
+  //   try {
+  //     // LoginRequest request = new LoginRequest();
+  //     // request.email = email;
+  //     // request.password = password;
+
+  //     // dio.options.contentType = "application/json";
+  //     // Response response =
+  //     //     await dio.post(UrlConstants.login, data: request.toJson());
+
+  //     Response response = await dio.post(UrlConstants.login +
+  //         "?no_telp=" +
+  //         notelp +
+  //         "&password=" +
+  //         password +
+  //         "&role=customer");
+
+  //     return BaseResponse<LoginResponse>.fromJson(
+  //         response.data != null ? response.data : null, LoginResponse.fromJson);
+  //   } catch (error, stacktrace) {
+  //     print("Exception occured: $error stackTrace: $stacktrace");
+  //     return BaseResponse<LoginResponse>.withError("$error");
+  //   }
+  // }
 
   // Future<LoginResponse> getLogin(String username, String password) async {
   //   try {

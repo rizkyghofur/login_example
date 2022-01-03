@@ -4,20 +4,20 @@ import 'package:login_example/bloc/AuthBloc.dart';
 import 'package:login_example/component/customClipper.dart';
 import 'package:flutter/material.dart';
 import 'package:login_example/component/themes.dart';
-import 'package:login_example/model/response/LoginResponse.dart';
+import 'package:login_example/model/response/RegisterResponse.dart';
 import 'package:login_example/model/sqliteModel.dart';
-import 'package:login_example/page/RegisterPage.dart';
+import 'package:login_example/page/LoginPage.dart';
 import 'package:login_example/utils/SharedPrefs.dart';
 import 'HomePage.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key key}) : super(key: key);
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({Key key}) : super(key: key);
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _RegisterScreenState createState() => _RegisterScreenState();
 }
 
-Future<bool> checkLogin() async {
+Future<bool> checkRegister() async {
   bool isUser;
   await Pengguna().select().toSingle().then((Pengguna user) async {
     if (user != null) {
@@ -29,14 +29,14 @@ Future<bool> checkLogin() async {
   return isUser;
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   final PreferencesUtil util = PreferencesUtil();
   bool _isLoaded = false;
 
   @override
   void initState() {
     super.initState();
-    checkLogin().then((value) {
+    checkRegister().then((value) {
       if (value && util.isKeyExists(PreferencesUtil.name)) {
         Navigator.pushReplacement(
           context,
@@ -49,9 +49,11 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
-  final AuthBloc loginBloc = AuthBloc();
-  TextEditingController usernameController = new TextEditingController();
+  final AuthBloc registerBloc = AuthBloc();
+  TextEditingController nameController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
+  TextEditingController emailController = new TextEditingController();
+  TextEditingController noTelpController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   RichText(
                     textAlign: TextAlign.center,
                     text: TextSpan(
-                        text: 'Log',
+                        text: 'Reg',
                         style: TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.w700,
@@ -105,7 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         children: [
                           TextSpan(
-                            text: 'in',
+                            text: 'ister',
                             style: TextStyle(color: Colors.black, fontSize: 30),
                           ),
                         ]),
@@ -119,7 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              "Username",
+                              "Name",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 15),
                             ),
@@ -128,7 +130,53 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             TextField(
                                 obscureText: false,
-                                controller: usernameController,
+                                controller: nameController,
+                                decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    fillColor: Color(0xfff3f3f4),
+                                    filled: true))
+                          ],
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Email",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 15),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            TextField(
+                                obscureText: false,
+                                controller: emailController,
+                                decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    fillColor: Color(0xfff3f3f4),
+                                    filled: true))
+                          ],
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Phone Number",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 15),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            TextField(
+                                obscureText: false,
+                                controller: noTelpController,
                                 decoration: InputDecoration(
                                     border: InputBorder.none,
                                     fillColor: Color(0xfff3f3f4),
@@ -164,26 +212,39 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(height: height * .055),
                   GestureDetector(
                     onTap: () async {
-                      setState(() {
-                        _isLoaded = true;
-                      });
-                      await loginBloc
-                          .getLogin(
-                              usernameController.text, passwordController.text)
-                          .then((response) async {
-                        if (response.success == "0") {
+                      await registerBloc
+                          .getRegister(
+                              nameController.text,
+                              emailController.text,
+                              noTelpController.text,
+                              passwordController.text)
+                          .then((RegisterResponse response) {
+                        try {
+                          if (response.success == "0") {
+                            Fluttertoast.showToast(
+                                msg: "Registration Failed",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.CENTER,
+                                timeInSecForIosWeb: 1);
+                          } else {
+                            Fluttertoast.showToast(
+                                msg: "Account Registered. Go login now",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.CENTER,
+                                timeInSecForIosWeb: 1);
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LoginScreen(),
+                              ),
+                            );
+                          }
+                        } catch (e) {
                           Fluttertoast.showToast(
-                              msg: "Invalid username/password",
+                              msg: "Registration Failed",
                               toastLength: Toast.LENGTH_SHORT,
                               gravity: ToastGravity.CENTER,
                               timeInSecForIosWeb: 1);
-                        } else {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => HomeScreen(),
-                            ),
-                          );
                         }
                         setState(() {
                           _isLoaded = false;
@@ -215,7 +276,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: _isLoaded
                           ? Center(child: CircularProgressIndicator())
                           : Text(
-                              'Login',
+                              'Register',
                               style:
                                   TextStyle(fontSize: 20, color: Colors.white),
                             ),
@@ -228,22 +289,24 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Don't have an account? ",
+                        "Already have an account? ",
                         style: regular16pt.copyWith(color: textGrey),
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => RegisterScreen()));
+                          Navigator.pop(
+                            context,
+                          );
                         },
                         child: Text(
-                          'Register',
+                          'Login',
                           style: regular16pt.copyWith(color: primaryBlue),
                         ),
                       ),
                     ],
+                  ),
+                  SizedBox(
+                    height: 20,
                   ),
                 ],
               ),

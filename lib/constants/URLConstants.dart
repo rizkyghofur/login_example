@@ -1,3 +1,4 @@
 class UrlConstants {
-  static const link = "https://reqres.in/api/login";
+  static const login = "http://testing.rizkyghofur.xyz/api/login-customer";
+  static const register = "http://testing.rizkyghofur.xyz/api/daftar-customer";
 }
