@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:login_example/bloc/AuthBloc.dart';
 import 'package:login_example/component/customClipper.dart';
@@ -31,7 +32,15 @@ Future<bool> checkRegister() async {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final PreferencesUtil util = PreferencesUtil();
+  final _form = GlobalKey<FormState>();
   bool _isLoaded = false;
+  bool _isValid = false;
+
+  void _saveForm() {
+    setState(() {
+      _isValid = _form.currentState.validate();
+    });
+  }
 
   @override
   void initState() {
@@ -113,143 +122,195 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ]),
                   ),
                   SizedBox(height: 50),
-                  Column(
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              "Name",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 15),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            TextField(
-                                obscureText: false,
-                                controller: nameController,
-                                decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    fillColor: Color(0xfff3f3f4),
-                                    filled: true))
-                          ],
+                  Form(
+                    key: _form,
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "Name",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 15),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              TextFormField(
+                                  keyboardType: TextInputType.name,
+                                  obscureText: false,
+                                  controller: nameController,
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      return "Please enter your name";
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                  decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      fillColor: Color(0xfff3f3f4),
+                                      filled: true))
+                            ],
+                          ),
                         ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              "Email",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 15),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            TextField(
-                                obscureText: false,
-                                controller: emailController,
-                                decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    fillColor: Color(0xfff3f3f4),
-                                    filled: true))
-                          ],
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "Email",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 15),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              TextFormField(
+                                  keyboardType: TextInputType.emailAddress,
+                                  obscureText: false,
+                                  controller: emailController,
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      return "Email can't be empty";
+                                    } else if (!RegExp(r'\S+@\S+\.\S+')
+                                        .hasMatch(value)) {
+                                      return "Please enter your valid email address";
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                  decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      fillColor: Color(0xfff3f3f4),
+                                      filled: true))
+                            ],
+                          ),
                         ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              "Phone Number",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 15),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            TextField(
-                                obscureText: false,
-                                controller: noTelpController,
-                                decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    fillColor: Color(0xfff3f3f4),
-                                    filled: true))
-                          ],
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "Phone Number",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 15),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              TextFormField(
+                                  keyboardType: TextInputType.number,
+                                  obscureText: false,
+                                  controller: noTelpController,
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      return "Please enter your phone number";
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                  decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      fillColor: Color(0xfff3f3f4),
+                                      filled: true))
+                            ],
+                          ),
                         ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              "Password",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 15),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            TextField(
-                                obscureText: true,
-                                controller: passwordController,
-                                decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    fillColor: Color(0xfff3f3f4),
-                                    filled: true))
-                          ],
-                        ),
-                      )
-                    ],
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "Password",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 15),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              TextFormField(
+                                  obscureText: true,
+                                  controller: passwordController,
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      return "Please enter your password";
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                  decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      fillColor: Color(0xfff3f3f4),
+                                      filled: true))
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                   SizedBox(height: height * .055),
                   GestureDetector(
                     onTap: () async {
-                      await registerBloc
-                          .getRegister(
-                              nameController.text,
-                              emailController.text,
-                              noTelpController.text,
-                              passwordController.text)
-                          .then((RegisterResponse response) {
-                        try {
-                          if (response.success == "0") {
+                      setState(() {
+                        _isLoaded = true;
+                      });
+                      _saveForm();
+                      if (_isValid) {
+                        await registerBloc
+                            .getRegister(
+                                nameController.text,
+                                emailController.text,
+                                noTelpController.text,
+                                passwordController.text)
+                            .then((RegisterResponse response) {
+                          try {
+                            if (response.success == "0") {
+                              Fluttertoast.showToast(
+                                  msg: "Registration Failed",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.CENTER,
+                                  timeInSecForIosWeb: 1);
+                            } else {
+                              Fluttertoast.showToast(
+                                  msg: "Account Registered. Go login now",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.CENTER,
+                                  timeInSecForIosWeb: 1);
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => LoginScreen(),
+                                ),
+                              );
+                            }
+                          } catch (e) {
                             Fluttertoast.showToast(
                                 msg: "Registration Failed",
                                 toastLength: Toast.LENGTH_SHORT,
                                 gravity: ToastGravity.CENTER,
                                 timeInSecForIosWeb: 1);
-                          } else {
-                            Fluttertoast.showToast(
-                                msg: "Account Registered. Go login now",
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.CENTER,
-                                timeInSecForIosWeb: 1);
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => LoginScreen(),
-                              ),
-                            );
                           }
-                        } catch (e) {
-                          Fluttertoast.showToast(
-                              msg: "Registration Failed",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.CENTER,
-                              timeInSecForIosWeb: 1);
-                        }
+                          setState(() {
+                            _isLoaded = false;
+                          });
+                        });
+                      } else {
+                        Fluttertoast.showToast(
+                            msg: "Please check your input",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 1);
                         setState(() {
                           _isLoaded = false;
                         });
-                      });
+                      }
                     },
                     child: Container(
                       width: MediaQuery.of(context).size.width,

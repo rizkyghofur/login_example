@@ -15,6 +15,8 @@ class AuthBloc {
           await authRepository.getLogin(username, password);
       var randomId = new Random();
       util.putString(PreferencesUtil.name, response.nama);
+      util.putString(PreferencesUtil.userId, response.id.toString());
+      util.putString(PreferencesUtil.role, response.role);
       if (response.success == "1") {
         await Pengguna().select().toSingle().then((user) async {
           if (user == null) {

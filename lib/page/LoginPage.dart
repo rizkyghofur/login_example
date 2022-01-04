@@ -4,7 +4,6 @@ import 'package:login_example/bloc/AuthBloc.dart';
 import 'package:login_example/component/customClipper.dart';
 import 'package:flutter/material.dart';
 import 'package:login_example/component/themes.dart';
-import 'package:login_example/model/response/LoginResponse.dart';
 import 'package:login_example/model/sqliteModel.dart';
 import 'package:login_example/page/RegisterPage.dart';
 import 'package:login_example/utils/SharedPrefs.dart';
@@ -31,7 +30,15 @@ Future<bool> checkLogin() async {
 
 class _LoginScreenState extends State<LoginScreen> {
   final PreferencesUtil util = PreferencesUtil();
+  final _form = GlobalKey<FormState>();
   bool _isLoaded = false;
+  bool _isValid = false;
+
+  void _saveForm() {
+    setState(() {
+      _isValid = _form.currentState.validate();
+    });
+  }
 
   @override
   void initState() {
@@ -111,84 +118,111 @@ class _LoginScreenState extends State<LoginScreen> {
                         ]),
                   ),
                   SizedBox(height: 50),
-                  Column(
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              "Username",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 15),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            TextField(
-                                obscureText: false,
-                                controller: usernameController,
-                                decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    fillColor: Color(0xfff3f3f4),
-                                    filled: true))
-                          ],
+                  Form(
+                    key: _form,
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "Phone Number",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 15),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              TextFormField(
+                                  obscureText: false,
+                                  controller: usernameController,
+                                  keyboardType: TextInputType.number,
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      return "Please enter your number";
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                  decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      fillColor: Color(0xfff3f3f4),
+                                      filled: true))
+                            ],
+                          ),
                         ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              "Password",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 15),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            TextField(
-                                obscureText: true,
-                                controller: passwordController,
-                                decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    fillColor: Color(0xfff3f3f4),
-                                    filled: true))
-                          ],
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "Password",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 15),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              TextFormField(
+                                  obscureText: true,
+                                  controller: passwordController,
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      return "Please enter your password";
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                  decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      fillColor: Color(0xfff3f3f4),
+                                      filled: true))
+                            ],
+                          ),
                         ),
-                      )
-                    ],
+                      ],
+                    ),
                   ),
                   SizedBox(height: height * .055),
                   GestureDetector(
                     onTap: () async {
-                      setState(() {
-                        _isLoaded = true;
-                      });
-                      await loginBloc
-                          .getLogin(
-                              usernameController.text, passwordController.text)
-                          .then((response) async {
-                        if (response.success == "0") {
-                          Fluttertoast.showToast(
-                              msg: "Invalid username/password",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.CENTER,
-                              timeInSecForIosWeb: 1);
-                        } else {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => HomeScreen(),
-                            ),
-                          );
-                        }
+                      _saveForm();
+                      if (_isValid) {
                         setState(() {
-                          _isLoaded = false;
+                          _isLoaded = true;
                         });
-                      });
+                        await loginBloc
+                            .getLogin(usernameController.text,
+                                passwordController.text)
+                            .then((response) async {
+                          if (response.success == "0") {
+                            Fluttertoast.showToast(
+                                msg: "Invalid username/password",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.CENTER,
+                                timeInSecForIosWeb: 1);
+                          } else {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => HomeScreen(),
+                              ),
+                            );
+                          }
+                          setState(() {
+                            _isLoaded = false;
+                          });
+                        });
+                      } else {
+                        Fluttertoast.showToast(
+                            msg: "Please check your input",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 1);
+                      }
                     },
                     child: Container(
                       width: MediaQuery.of(context).size.width,

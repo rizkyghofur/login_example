@@ -1,8 +1,18 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:login_example/page/LoginPage.dart';
+import 'package:login_example/page/SplashScreenPage.dart';
 import 'package:login_example/utils/Injector.dart';
 import 'constants/Constants.dart';
 import 'model/sqliteModel.dart';
+
+class MyHttpoverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -11,6 +21,7 @@ void main() async {
 
   final bool isInitialized = await AppDBModel().initializeDB();
   if (isInitialized) {
+    HttpOverrides.global = new MyHttpoverrides();
     runApp(
       MyApp(),
     );
@@ -29,7 +40,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LoginScreen(),
+      home: SplashScreenPage(),
       debugShowCheckedModeBanner: false,
     );
   }
