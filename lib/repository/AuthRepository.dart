@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:login_example/constants/UrlConstants.dart';
-import 'package:login_example/model/response/BaseResponse.dart';
 import 'package:login_example/model/response/LoginResponse.dart';
 import 'package:login_example/model/response/RegisterResponse.dart';
 import 'package:login_example/utils/Injector.dart';

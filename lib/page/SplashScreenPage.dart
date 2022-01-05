@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:login_example/page/DataPage.dart';
 import 'package:login_example/page/LoginPage.dart';
 import 'package:login_example/utils/Injector.dart';
 import 'package:login_example/utils/SharedPrefs.dart';
-import 'HomePage.dart';
 
 class SplashScreenPage extends StatefulWidget {
   @override
@@ -33,7 +33,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
               Duration(seconds: 3),
               () => Navigator.of(context)
                       .pushReplacement(MaterialPageRoute(builder: (_) {
-                    return HomeScreen();
+                    return DataScreenPage();
                   })));
         } else {
           Timer(

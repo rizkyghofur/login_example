@@ -5,9 +5,9 @@ import 'package:login_example/component/customClipper.dart';
 import 'package:flutter/material.dart';
 import 'package:login_example/component/themes.dart';
 import 'package:login_example/model/sqliteModel.dart';
+import 'package:login_example/page/DataPage.dart';
 import 'package:login_example/page/RegisterPage.dart';
 import 'package:login_example/utils/SharedPrefs.dart';
-import 'HomePage.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key key}) : super(key: key);
@@ -48,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => HomeScreen(),
+            builder: (context) => DataScreenPage(),
           ),
         );
         print('An account has logged in');
@@ -208,7 +208,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => HomeScreen(),
+                                builder: (context) => DataScreenPage(),
                               ),
                             );
                           }
