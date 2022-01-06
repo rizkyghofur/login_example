@@ -13,6 +13,17 @@ const penggunaTable = SqfEntityTable(tableName: 'pengguna', fields: [
   SqfEntityField('role', DbType.text),
 ]);
 
+const menuTable = SqfEntityTable(tableName: 'menu', fields: [
+  SqfEntityField('id', DbType.integer, isPrimaryKeyField: true),
+  SqfEntityField('id_menu', DbType.integer),
+  SqfEntityField('nama_menu', DbType.text),
+  SqfEntityField('jenis_menu', DbType.text),
+  SqfEntityField('foto_menu', DbType.text),
+  SqfEntityField('deskripsi', DbType.text),
+  SqfEntityField('harga', DbType.integer),
+  SqfEntityField('diskon', DbType.integer),
+]);
+
 const seqIdentity = SqfEntitySequence(
   sequenceName: 'identity',
 );
@@ -23,7 +34,8 @@ const dbModel = SqfEntityModel(
     dbVersion: 9,
     databaseName: 'app.db',
     databaseTables: [
-      penggunaTable
+      penggunaTable,
+      menuTable,
     ],
     sequences: [seqIdentity],
     bundledDatabasePath: null);

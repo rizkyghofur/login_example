@@ -41,6 +41,7 @@ dependencies:
   get_it: ^5.0.6
   http: any
   connectivity: ^2.0.2
+  connectivity_plus: ^0.8.1
 
   #architecture
   flutter_bloc: ^3.1.0

@@ -1,6 +1,6 @@
-# login_example
+# CRUD Sample
 
-A new Flutter Login Demo project.
+A new Flutter Login Register & CRUD Demo project.
 
 Demo account for testing login demo:
 Username: 081
