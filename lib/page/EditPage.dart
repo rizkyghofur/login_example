@@ -180,11 +180,13 @@ class _EditScreenPageState extends State<EditScreenPage> {
                                   .then((value) {
                                 if (value.message.contains("success")) {
                                   isSubmit = false;
-                                  Navigator.pushReplacement(
+                                  Navigator.pushAndRemoveUntil(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => DataScreenPage(),
+                                      builder: (BuildContext context) =>
+                                          DataScreenPage(),
                                     ),
+                                    (route) => false,
                                   );
                                 }
                               });
