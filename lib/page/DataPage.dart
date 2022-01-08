@@ -1,10 +1,12 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:login_example/bloc/CRUDBloc.dart';
 import 'package:login_example/constants/URLConstants.dart';
 import 'package:login_example/model/response/GetDataResponse.dart';
 import 'package:login_example/model/sqliteModel.dart';
 import 'package:login_example/page/DetailPage.dart';
+import 'package:login_example/page/EditPage.dart';
 import 'package:login_example/utils/Injector.dart';
 import 'package:login_example/utils/MyConnection.dart';
 import 'package:login_example/utils/SharedPrefs.dart';
@@ -118,10 +120,12 @@ class _DataScreenPageState extends State<DataScreenPage> {
                         itemCount: list.length,
                         itemBuilder: (BuildContext context, int index) {
                           return InkWell(
-                            onTap: (){
+                            onTap: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => DetailScreenPage(idMenu: list[index].id)),
+                                MaterialPageRoute(
+                                    builder: (context) => DetailScreenPage(
+                                        idMenu: list[index].id)),
                               );
                             },
                             child: Container(
@@ -145,7 +149,13 @@ class _DataScreenPageState extends State<DataScreenPage> {
                                         children: [
                                           InkWell(
                                             onTap: () {
-                                              print('lontong ngedit');
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        EditScreenPage(
+                                                            id: list[index].id)),
+                                              );
                                             },
                                             child: Icon(Icons.edit),
                                           ),
@@ -158,15 +168,43 @@ class _DataScreenPageState extends State<DataScreenPage> {
                                                 animType: AnimType.BOTTOMSLIDE,
                                                 title: 'Delete Item',
                                                 desc:
-                                                'Are you sure want to delete this item?',
+                                                    'Are you sure want to delete this item?',
                                                 buttonsTextStyle: TextStyle(
                                                     color: Colors.black),
                                                 showCloseIcon: true,
                                                 btnCancelOnPress: () {},
                                                 btnOkOnPress: () {
                                                   setState(() {
-                                                    crudBloc.deleteData(list[index].id).then((value){
+                                                    crudBloc
+                                                        .deleteData(
+                                                            list[index].id)
+                                                        .then((value) {
                                                       _refreshData();
+                                                      if (value.success
+                                                          .contains(
+                                                              "success")) {
+                                                        Fluttertoast.showToast(
+                                                            msg:
+                                                                "Delete Successful",
+                                                            toastLength: Toast
+                                                                .LENGTH_SHORT,
+                                                            gravity:
+                                                                ToastGravity
+                                                                    .CENTER,
+                                                            timeInSecForIosWeb:
+                                                                1);
+                                                      } else {
+                                                        Fluttertoast.showToast(
+                                                            msg:
+                                                                "Delete Failed",
+                                                            toastLength: Toast
+                                                                .LENGTH_SHORT,
+                                                            gravity:
+                                                                ToastGravity
+                                                                    .CENTER,
+                                                            timeInSecForIosWeb:
+                                                                1);
+                                                      }
                                                     });
                                                   });
                                                 },
@@ -196,10 +234,11 @@ class _DataScreenPageState extends State<DataScreenPage> {
                       itemCount: data.length,
                       itemBuilder: (BuildContext context, int index) {
                         return InkWell(
-                          onTap: (){
+                          onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => DetailScreenPage()),
+                              MaterialPageRoute(
+                                  builder: (context) => DetailScreenPage()),
                             );
                           },
                           child: Container(
@@ -223,7 +262,13 @@ class _DataScreenPageState extends State<DataScreenPage> {
                                       children: [
                                         InkWell(
                                           onTap: () {
-                                            print('lontong ngedit');
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      EditScreenPage(
+                                                          id: list[index].id)),
+                                            );
                                           },
                                           child: Icon(Icons.edit),
                                         ),
@@ -237,15 +282,39 @@ class _DataScreenPageState extends State<DataScreenPage> {
                                               animType: AnimType.BOTTOMSLIDE,
                                               title: 'Delete Item',
                                               desc:
-                                              'Are you sure want to delete this item?',
+                                                  'Are you sure want to delete this item?',
                                               buttonsTextStyle: TextStyle(
                                                   color: Colors.black),
                                               showCloseIcon: true,
                                               btnCancelOnPress: () {},
                                               btnOkOnPress: () {
                                                 setState(() {
-                                                  crudBloc.deleteData(list[index].id).then((value){
+                                                  crudBloc
+                                                      .deleteData(
+                                                          list[index].id)
+                                                      .then((value) {
                                                     _refreshData();
+                                                    if (value.success
+                                                        .contains("success")) {
+                                                      Fluttertoast.showToast(
+                                                          msg:
+                                                              "Delete Successful",
+                                                          toastLength: Toast
+                                                              .LENGTH_SHORT,
+                                                          gravity: ToastGravity
+                                                              .CENTER,
+                                                          timeInSecForIosWeb:
+                                                              1);
+                                                    } else {
+                                                      Fluttertoast.showToast(
+                                                          msg: "Delete Failed",
+                                                          toastLength: Toast
+                                                              .LENGTH_SHORT,
+                                                          gravity: ToastGravity
+                                                              .CENTER,
+                                                          timeInSecForIosWeb:
+                                                              1);
+                                                    }
                                                   });
                                                 });
                                               },

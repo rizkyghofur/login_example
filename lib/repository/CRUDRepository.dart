@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:login_example/constants/UrlConstants.dart';
+import 'package:login_example/model/request/UpdateDataRequest.dart';
 import 'package:login_example/model/response/DeleteDataResponse.dart';
 import 'package:login_example/model/response/GetDataResponse.dart';
+import 'package:login_example/model/response/UpdateDataResponse.dart';
 import 'package:login_example/model/sqliteModel.dart';
 import 'package:login_example/utils/Injector.dart';
 
@@ -46,6 +48,24 @@ class CRUDRepository {
         });
       }
 
+      return fetchedResponse;
+    } catch (error, stacktrace) {
+      throw Exception("Exception occured: $error stackTrace: $stacktrace");
+    }
+  }
+
+  Future<UpdateDataResponse> updatedata(idMenu, namaMenu, deskripsiMenu, hargaMenu, diskonMenu) async {
+    try {
+      UpdateDataRequest request = new UpdateDataRequest();
+      request.nama_menu = namaMenu;
+      request.deskripsi_menu = deskripsiMenu;
+      request.harga = hargaMenu;
+      request.diskon = diskonMenu;
+
+      dio.options.contentType = "application/x-www-form-urlencoded";
+      Response response = await dio.post(UrlConstants.update_data + idMenu.toString(), data: request.toJson());
+      var map = Map<String, dynamic>.from(response.data);
+      var fetchedResponse = UpdateDataResponse.fromJson(map);
       return fetchedResponse;
     } catch (error, stacktrace) {
       throw Exception("Exception occured: $error stackTrace: $stacktrace");

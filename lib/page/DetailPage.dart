@@ -11,8 +11,7 @@ class DetailScreenPage extends StatefulWidget {
 }
 
 class _DetailScreenPageState extends State<DetailScreenPage> {
-  var selectedMenu;
-  String namaMenu;
+  String namaMenu = "";
 
   @override
   void initState() {
@@ -21,7 +20,7 @@ class _DetailScreenPageState extends State<DetailScreenPage> {
   }
 
   void getSelectedMenu() async {
-    selectedMenu = await Menu()
+    await Menu()
         .select()
         .id_menu
         .equals(widget.idMenu)
