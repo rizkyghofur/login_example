@@ -5,23 +5,19 @@ part 'GetDataResponse.g.dart';
 @JsonSerializable()
 class GetDataResponse {
   int id;
-  String nama_menu;
-  String jenis;
-  String foto_menu;
-  String deskripsi_menu;
-  int harga;
-  int diskon;
-  String status;
+  String item_name;
+  String item_code;
+  String foto_produk;
+  String stock;
+  String price;
 
   GetDataResponse(
       {this.id,
-      this.nama_menu,
-      this.jenis,
-      this.foto_menu,
-      this.deskripsi_menu,
-      this.harga,
-      this.diskon,
-      this.status});
+      this.item_name,
+      this.item_code,
+      this.foto_produk,
+      this.stock,
+      this.price});
 
   Map<String, dynamic> toJson() => _$GetDataResponseToJson(this);
 

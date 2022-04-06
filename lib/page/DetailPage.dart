@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:login_example/model/sqliteModel.dart';
 
 class DetailScreenPage extends StatefulWidget {
   final int idMenu;
@@ -19,22 +18,10 @@ class _DetailScreenPageState extends State<DetailScreenPage> {
     super.initState();
   }
 
-  void getSelectedMenu() async {
-    await Menu()
-        .select()
-        .id_menu
-        .equals(widget.idMenu)
-        .toSingle()
-        .then((detailMenu) {
-      setState(() {
-        namaMenu = detailMenu.nama_menu;
-      });
-    });
-  }
+  void getSelectedMenu() async {}
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        color: Colors.white, child: Center(child: Text(namaMenu)));
+    return Container(color: Colors.white, child: Center(child: Text(namaMenu)));
   }
 }

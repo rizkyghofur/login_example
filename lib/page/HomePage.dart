@@ -1,4 +1,3 @@
-import 'package:login_example/model/sqliteModel.dart';
 import 'package:login_example/page/LoginPage.dart';
 import 'package:flutter/material.dart';
 import 'package:login_example/utils/SharedPrefs.dart';
@@ -114,7 +113,6 @@ class HomeScreen extends StatelessWidget {
                           showCloseIcon: true,
                           btnCancelOnPress: () {},
                           btnOkOnPress: () {
-                            Pengguna().select().delete();
                             PreferencesUtil().clearAll();
                             Navigator.pushReplacement(
                                 context,

@@ -12,10 +12,10 @@ AddDataRequest _$AddDataRequestFromJson(Map<String, dynamic> json) {
     deskripsi_menu: json['deskripsi_menu'] as String,
     harga: json['harga'] as int,
     diskon: json['diskon'] as int,
-  )
-    ..jenis = json['jenis'] as String
-    ..status = json['status'] as String
-    ..foto_menu = json['foto_menu'] as String;
+    jenis: json['jenis'] as String,
+    status: json['status'] as String,
+    foto_menu: json['foto_menu'] as String,
+  );
 }
 
 Map<String, dynamic> _$AddDataRequestToJson(AddDataRequest instance) =>

@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:login_example/page/DataPage.dart';
+import 'package:login_example/page/BottomNavBar.dart';
 import 'package:login_example/page/LoginPage.dart';
 import 'package:login_example/utils/SharedPrefs.dart';
 
@@ -29,7 +29,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
           Duration(seconds: 3),
           () => Navigator.of(context)
                   .pushReplacement(MaterialPageRoute(builder: (_) {
-                return DataScreenPage();
+                return BottomNavBar();
               })));
     } else {
       Timer(

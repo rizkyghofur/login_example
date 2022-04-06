@@ -8,13 +8,11 @@ part of 'DeleteDataResponse.dart';
 
 DeleteDataResponse _$DeleteDataResponseFromJson(Map<String, dynamic> json) {
   return DeleteDataResponse(
-    success: json['success'] as String,
-    code: json['code'] as int,
+    sukses: json['sukses'] as String,
   );
 }
 
 Map<String, dynamic> _$DeleteDataResponseToJson(DeleteDataResponse instance) =>
     <String, dynamic>{
-      'success': instance.success,
-      'code': instance.code,
+      'sukses': instance.sukses,
     };

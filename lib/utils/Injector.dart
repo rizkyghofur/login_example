@@ -23,18 +23,3 @@ Future setupLocator() async {
   PreferencesUtil util = await PreferencesUtil.getInstance();
   locator.registerSingleton<PreferencesUtil>(util);
 }
-
-Future<bool> isInternetAvailable() async {
-  bool isInternetAvailable = false;
-  try {
-    final result = await InternetAddress.lookup('google.com');
-    if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-      isInternetAvailable = true;
-    } else {
-      isInternetAvailable = false;
-    }
-  } catch (e) {
-    isInternetAvailable = false;
-  }
-  return isInternetAvailable;
-}

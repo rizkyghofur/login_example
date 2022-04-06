@@ -6,28 +6,14 @@ import 'package:login_example/component/customClipper.dart';
 import 'package:flutter/material.dart';
 import 'package:login_example/component/themes.dart';
 import 'package:login_example/model/response/RegisterResponse.dart';
-import 'package:login_example/model/sqliteModel.dart';
 import 'package:login_example/page/LoginPage.dart';
 import 'package:login_example/utils/SharedPrefs.dart';
-import 'HomePage.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key key}) : super(key: key);
 
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
-}
-
-Future<bool> checkRegister() async {
-  bool isUser;
-  await Pengguna().select().toSingle().then((Pengguna user) async {
-    if (user != null) {
-      isUser = true;
-    } else {
-      isUser = false;
-    }
-  });
-  return isUser;
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
@@ -39,22 +25,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void _saveForm() {
     setState(() {
       _isValid = _form.currentState.validate();
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    checkRegister().then((value) {
-      if (value && util.isKeyExists(PreferencesUtil.name)) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => HomeScreen(),
-          ),
-        );
-        print('An account has logged in');
-      }
     });
   }
 

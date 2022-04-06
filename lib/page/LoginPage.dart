@@ -4,8 +4,7 @@ import 'package:login_example/bloc/AuthBloc.dart';
 import 'package:login_example/component/customClipper.dart';
 import 'package:flutter/material.dart';
 import 'package:login_example/component/themes.dart';
-import 'package:login_example/model/sqliteModel.dart';
-import 'package:login_example/page/DataPage.dart';
+import 'package:login_example/page/BottomNavBar.dart';
 import 'package:login_example/page/RegisterPage.dart';
 import 'package:login_example/utils/SharedPrefs.dart';
 
@@ -14,18 +13,6 @@ class LoginScreen extends StatefulWidget {
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
-}
-
-Future<bool> checkLogin() async {
-  bool isUser;
-  await Pengguna().select().toSingle().then((Pengguna user) async {
-    if (user != null) {
-      isUser = true;
-    } else {
-      isUser = false;
-    }
-  });
-  return isUser;
 }
 
 class _LoginScreenState extends State<LoginScreen> {
@@ -43,17 +30,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    checkLogin().then((value) {
-      if (value && util.isKeyExists(PreferencesUtil.name)) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => DataScreenPage(),
-          ),
-        );
-        print('An account has logged in');
-      }
-    });
   }
 
   final AuthBloc loginBloc = AuthBloc();
@@ -188,42 +164,44 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   SizedBox(height: height * .055),
                   GestureDetector(
-                    onTap: () async {
-                      _saveForm();
-                      if (_isValid) {
-                        setState(() {
-                          _isLoaded = true;
-                        });
-                        await loginBloc
-                            .getLogin(usernameController.text,
-                                passwordController.text)
-                            .then((response) async {
-                          if (response.success == "0") {
-                            Fluttertoast.showToast(
-                                msg: "Invalid username/password",
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.CENTER,
-                                timeInSecForIosWeb: 1);
-                          } else {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DataScreenPage(),
-                              ),
-                            );
-                          }
-                          setState(() {
-                            _isLoaded = false;
-                          });
-                        });
-                      } else {
-                        Fluttertoast.showToast(
-                            msg: "Please check your input",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.CENTER,
-                            timeInSecForIosWeb: 1);
-                      }
-                    },
+                    onTap: _isLoaded
+                        ? null
+                        : () async {
+                            _saveForm();
+                            if (_isValid) {
+                              setState(() {
+                                _isLoaded = true;
+                              });
+                              await loginBloc
+                                  .getLogin(usernameController.text,
+                                      passwordController.text)
+                                  .then((response) async {
+                                if (response.success == "0") {
+                                  Fluttertoast.showToast(
+                                      msg: "Invalid username/password",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.CENTER,
+                                      timeInSecForIosWeb: 1);
+                                } else {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => BottomNavBar(),
+                                    ),
+                                  );
+                                }
+                                setState(() {
+                                  _isLoaded = false;
+                                });
+                              });
+                            } else {
+                              Fluttertoast.showToast(
+                                  msg: "Please check your input",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.CENTER,
+                                  timeInSecForIosWeb: 1);
+                            }
+                          },
                     child: Container(
                       width: MediaQuery.of(context).size.width,
                       height: 50,

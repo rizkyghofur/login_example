@@ -4,12 +4,9 @@ part 'DeleteDataResponse.g.dart';
 
 @JsonSerializable()
 class DeleteDataResponse {
-  String success;
-  int code;
+  String sukses;
 
-  DeleteDataResponse(
-      {this.success,
-        this.code});
+  DeleteDataResponse({this.sukses});
 
   Map<String, dynamic> toJson() => _$DeleteDataResponseToJson(this);
 
