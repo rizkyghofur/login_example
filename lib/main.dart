@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:login_example/page/SplashScreenPage.dart';
-import 'package:login_example/page/TestWidget.dart';
 import 'package:login_example/utils/Injector.dart';
 import 'constants/Constants.dart';
 
@@ -19,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: TesWidget(),
+      home: SplashScreenPage(),
       debugShowCheckedModeBanner: false,
     );
   }
