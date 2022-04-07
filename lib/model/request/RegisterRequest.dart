@@ -7,9 +7,8 @@ class RegisterRequest {
   String name;
   String email;
   String password;
-  String notelp;
 
-  RegisterRequest({this.name, this.email, this.password, this.notelp});
+  RegisterRequest({this.name, this.email, this.password});
 
   Map<String, dynamic> toJson() => _$RegisterRequestToJson(this);
 

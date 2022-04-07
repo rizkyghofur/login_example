@@ -33,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   final AuthBloc loginBloc = AuthBloc();
-  TextEditingController usernameController = new TextEditingController();
+  TextEditingController emailController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
 
   @override
@@ -104,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                "Phone Number",
+                                "E-mail",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 15),
                               ),
@@ -113,11 +113,14 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               TextFormField(
                                   obscureText: false,
-                                  controller: usernameController,
-                                  keyboardType: TextInputType.number,
+                                  controller: emailController,
+                                  keyboardType: TextInputType.emailAddress,
                                   validator: (value) {
                                     if (value.isEmpty) {
-                                      return "Please enter your number";
+                                      return "Please enter your e-mail";
+                                    } else if (!RegExp(r'\S+@\S+\.\S+')
+                                        .hasMatch(value)) {
+                                      return "Please enter your valid email address";
                                     } else {
                                       return null;
                                     }
@@ -173,12 +176,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                 _isLoaded = true;
                               });
                               await loginBloc
-                                  .getLogin(usernameController.text,
+                                  .getLogin(emailController.text,
                                       passwordController.text)
                                   .then((response) async {
                                 if (response.success == "0") {
                                   Fluttertoast.showToast(
-                                      msg: "Invalid username/password",
+                                      msg: "Invalid email/password",
                                       toastLength: Toast.LENGTH_SHORT,
                                       gravity: ToastGravity.CENTER,
                                       timeInSecForIosWeb: 1);

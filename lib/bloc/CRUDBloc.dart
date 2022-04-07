@@ -16,17 +16,21 @@ class CrudBloc {
     }
   }
 
-  Future<AddDataResponse> addData(namaMenu, deskripsiMenu, hargaMenu, diskonMenu, jenisMenu) async {
+  Future<AddDataResponse> addData(
+      item_name, item_code, price, stock, foto_produk) async {
     try {
-      return crudRepository.addData(namaMenu, deskripsiMenu, hargaMenu, diskonMenu, jenisMenu);
+      return crudRepository.addData(
+          item_name, item_code, price, stock, foto_produk);
     } catch (e) {
       return null;
     }
   }
 
-  Future<UpdateDataResponse> updateData(idMenu, namaMenu, deskripsiMenu, hargaMenu, diskonMenu) async {
+  Future<UpdateDataResponse> updateData(
+      id, item_name, item_code, price, stock, foto_produk) async {
     try {
-      return crudRepository.updateData(idMenu, namaMenu, deskripsiMenu, hargaMenu, diskonMenu);
+      return crudRepository.updateData(
+          id, item_name, item_code, price, stock, foto_produk);
     } catch (e) {
       return null;
     }

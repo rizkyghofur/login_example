@@ -4,15 +4,18 @@ part 'AddDataRequest.g.dart';
 
 @JsonSerializable()
 class AddDataRequest {
-  String nama_menu;
-  String deskripsi_menu;
-  int harga;
-  int diskon;
-  String jenis;
-  String status;
-  String foto_menu;
+  String item_name;
+  String item_code;
+  String foto_produk;
+  String stock;
+  String price;
 
-  AddDataRequest({this.nama_menu, this.deskripsi_menu, this.harga, this.diskon, this.jenis, this.status, this.foto_menu});
+  AddDataRequest(
+      {this.item_name,
+      this.item_code,
+      this.foto_produk,
+      this.stock,
+      this.price});
 
   Map<String, dynamic> toJson() => _$AddDataRequestToJson(this);
 

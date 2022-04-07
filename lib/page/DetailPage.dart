@@ -10,18 +10,13 @@ class DetailScreenPage extends StatefulWidget {
 }
 
 class _DetailScreenPageState extends State<DetailScreenPage> {
-  String namaMenu = "";
-
   @override
   void initState() {
-    getSelectedMenu();
     super.initState();
   }
 
-  void getSelectedMenu() async {}
-
   @override
   Widget build(BuildContext context) {
-    return Container(color: Colors.white, child: Center(child: Text(namaMenu)));
+    return Container(color: Colors.white, child: Center(child: Text('')));
   }
 }

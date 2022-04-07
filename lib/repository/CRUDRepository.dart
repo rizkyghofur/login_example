@@ -27,16 +27,14 @@ class CRUDRepository {
   }
 
   Future<AddDataResponse> addData(
-      namaMenu, deskripsiMenu, hargaMenu, diskonMenu, jenisMenu) async {
+      item_name, item_code, price, stock, foto_produk) async {
     try {
       AddDataRequest request = new AddDataRequest();
-      request.nama_menu = namaMenu;
-      request.deskripsi_menu = deskripsiMenu;
-      request.harga = hargaMenu;
-      request.diskon = diskonMenu;
-      request.jenis = jenisMenu;
-      request.status = "buka";
-      request.foto_menu = "Aljifjewhroieqhoijfldsjfhdsoqiejrpowroew";
+      request.item_name = item_name;
+      request.item_code = item_code;
+      request.price = price;
+      request.stock = stock;
+      request.foto_produk = foto_produk;
 
       dio.options.contentType = "application/x-www-form-urlencoded";
       Response response =
@@ -50,17 +48,18 @@ class CRUDRepository {
   }
 
   Future<UpdateDataResponse> updateData(
-      idMenu, namaMenu, deskripsiMenu, hargaMenu, diskonMenu) async {
+      id, item_name, item_code, price, stock, foto_produk) async {
     try {
       UpdateDataRequest request = new UpdateDataRequest();
-      request.nama_menu = namaMenu;
-      request.deskripsi_menu = deskripsiMenu;
-      request.harga = hargaMenu;
-      request.diskon = diskonMenu;
+      request.item_name = item_name;
+      request.item_code = item_code;
+      request.price = price;
+      request.stock = stock;
+      request.foto_produk = foto_produk;
 
       dio.options.contentType = "application/x-www-form-urlencoded";
       Response response = await dio.post(
-          UrlConstants.update_data + idMenu.toString(),
+          UrlConstants.update_data + id.toString(),
           data: request.toJson());
       var map = Map<String, dynamic>.from(response.data);
       var fetchedResponse = UpdateDataResponse.fromJson(map);

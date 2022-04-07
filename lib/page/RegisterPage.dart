@@ -32,7 +32,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController nameController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
   TextEditingController emailController = new TextEditingController();
-  TextEditingController noTelpController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -167,37 +166,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                "Phone Number",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 15),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              TextFormField(
-                                  keyboardType: TextInputType.number,
-                                  obscureText: false,
-                                  controller: noTelpController,
-                                  validator: (value) {
-                                    if (value.isEmpty) {
-                                      return "Please enter your phone number";
-                                    } else {
-                                      return null;
-                                    }
-                                  },
-                                  decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      fillColor: Color(0xfff3f3f4),
-                                      filled: true))
-                            ],
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(vertical: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
                                 "Password",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 15),
@@ -234,14 +202,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       _saveForm();
                       if (_isValid) {
                         await registerBloc
-                            .getRegister(
-                                nameController.text,
-                                emailController.text,
-                                noTelpController.text,
-                                passwordController.text)
+                            .getRegister(nameController.text,
+                                emailController.text, passwordController.text)
                             .then((RegisterResponse response) {
                           try {
-                            if (response.success == "0") {
+                            if (response.code != 201) {
                               Fluttertoast.showToast(
                                   msg: "Registration Failed",
                                   toastLength: Toast.LENGTH_SHORT,

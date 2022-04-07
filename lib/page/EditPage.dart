@@ -14,10 +14,7 @@ class EditScreenPage extends StatefulWidget {
 class _EditScreenPageState extends State<EditScreenPage> {
   final _formKey = GlobalKey<FormState>();
   final CrudBloc crudBloc = CrudBloc();
-  String newNamaMenu = "";
-  String newDeskripsiMenu = "";
-  int newHargaMenu = 0;
-  int newDiskonMenu = 0;
+  String item_name, item_code, price, stock, foto_produk;
   bool isSubmit = false;
 
   @override
@@ -56,7 +53,7 @@ class _EditScreenPageState extends State<EditScreenPage> {
                           if (value.isEmpty) {
                             return 'Nama menu tidak boleh kosong';
                           } else {
-                            newNamaMenu = value;
+                            item_name = value;
                           }
                           return null;
                         },
@@ -67,16 +64,16 @@ class _EditScreenPageState extends State<EditScreenPage> {
                       child: TextFormField(
                         initialValue: "",
                         decoration: new InputDecoration(
-                          hintText: "contoh: Lontong ini enak lho",
-                          labelText: "Deskripsi Menu",
+                          hintText: "contoh: E421",
+                          labelText: "Kode Menu",
                           border: OutlineInputBorder(
                               borderRadius: new BorderRadius.circular(5.0)),
                         ),
                         validator: (value) {
                           if (value.isEmpty) {
-                            return 'Deskripsi menu tidak boleh kosong';
+                            return 'Kode menu tidak boleh kosong';
                           } else {
-                            newDeskripsiMenu = value;
+                            item_code = value;
                           }
                           return null;
                         },
@@ -97,7 +94,7 @@ class _EditScreenPageState extends State<EditScreenPage> {
                           if (value.isEmpty) {
                             return 'Harga menu tidak boleh kosong';
                           } else {
-                            newHargaMenu = int.parse(value);
+                            price = value;
                           }
                           return null;
                         },
@@ -109,16 +106,36 @@ class _EditScreenPageState extends State<EditScreenPage> {
                         initialValue: "",
                         keyboardType: TextInputType.number,
                         decoration: new InputDecoration(
-                          hintText: "contoh: 10 (dalam persen)",
-                          labelText: "Diskon Menu",
+                          hintText: "contoh: 10",
+                          labelText: "Stok Menu",
                           border: OutlineInputBorder(
                               borderRadius: new BorderRadius.circular(5.0)),
                         ),
                         validator: (value) {
                           if (value.isEmpty) {
-                            return 'Diskon menu tidak boleh kosong';
+                            return 'Stok menu tidak boleh kosong';
                           } else {
-                            newDiskonMenu = int.parse(value);
+                            stock = value;
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        initialValue: "",
+                        keyboardType: TextInputType.number,
+                        decoration: new InputDecoration(
+                          labelText: "Foto Menu",
+                          border: OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(5.0)),
+                        ),
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Foto menu tidak boleh kosong';
+                          } else {
+                            foto_produk = value;
                           }
                           return null;
                         },
@@ -159,11 +176,11 @@ class _EditScreenPageState extends State<EditScreenPage> {
                         setState(() {
                           isSubmit = true;
                         });
-                        var idMenu = widget.id;
+                        var id = widget.id;
                         if (_formKey.currentState.validate()) {
                           crudBloc
-                              .updateData(idMenu, newNamaMenu, newDeskripsiMenu,
-                                  newHargaMenu, newDiskonMenu)
+                              .updateData(id, item_name, item_code, price,
+                                  stock, foto_produk)
                               .then((value) {
                             if (value.message.contains("success")) {
                               isSubmit = false;

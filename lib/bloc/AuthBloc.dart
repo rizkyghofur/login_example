@@ -11,9 +11,8 @@ class AuthBloc {
     try {
       LoginResponse response =
           await authRepository.getLogin(username, password);
-      util.putString(PreferencesUtil.name, response.nama);
-      util.putString(PreferencesUtil.userId, response.id.toString());
-      util.putString(PreferencesUtil.role, response.role);
+      util.putString(PreferencesUtil.name, response.data.name);
+      util.putString(PreferencesUtil.userId, response.data.id.toString());
       return response;
     } catch (e) {
       return null;
@@ -21,10 +20,9 @@ class AuthBloc {
   }
 
   Future<RegisterResponse> getRegister(
-      String nama, String email, String notelp, String password) async {
+      String nama, String email, String password) async {
     try {
-      return authRepository.register(nama, email, notelp, password);
-      // return loginRepository.getLogin(username, password);
+      return authRepository.register(nama, email, password);
     } catch (e) {
       return null;
     }

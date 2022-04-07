@@ -7,7 +7,7 @@ import 'package:login_example/utils/Injector.dart';
 class AuthRepository {
   final Dio dio = locator<Dio>();
 
-  Future<LoginResponse> getLogin(String notelp, String password) async {
+  Future<LoginResponse> getLogin(String email, String password) async {
     try {
       // LoginRequest request = new LoginRequest();
       // request.email = email;
@@ -17,12 +17,8 @@ class AuthRepository {
       // Response response =
       //     await dio.post(UrlConstants.login, data: request.toJson());
 
-      Response response = await dio.post(UrlConstants.login +
-          "?no_telp=" +
-          notelp +
-          "&password=" +
-          password +
-          "&role=customer");
+      Response response = await dio.post(
+          UrlConstants.login + "?email=" + email + "&password=" + password);
 
       var map = Map<String, dynamic>.from(response.data);
       var fetchedResponse = LoginResponse.fromJson(map);
@@ -34,7 +30,7 @@ class AuthRepository {
   }
 
   Future<RegisterResponse> register(
-      String nama, String email, String notelp, String password) async {
+      String nama, String email, String password) async {
     try {
       // LoginRequest request = new LoginRequest();
       // request.email = email;
@@ -49,9 +45,7 @@ class AuthRepository {
           "&password=" +
           password +
           "&email=" +
-          email +
-          "&no_telp=" +
-          notelp);
+          email);
 
       var map = Map<String, dynamic>.from(response.data);
       var fetchedResponse = RegisterResponse.fromJson(map);
@@ -63,7 +57,7 @@ class AuthRepository {
   }
 
   // Future<BaseResponse<LoginResponse>> getLogin(
-  //     String notelp, String password) async {
+  //     String email, String password) async {
   //   try {
   //     // LoginRequest request = new LoginRequest();
   //     // request.email = email;
@@ -75,7 +69,7 @@ class AuthRepository {
 
   //     Response response = await dio.post(UrlConstants.login +
   //         "?no_telp=" +
-  //         notelp +
+  //         email +
   //         "&password=" +
   //         password +
   //         "&role=customer");

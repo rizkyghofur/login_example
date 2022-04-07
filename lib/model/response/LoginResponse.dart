@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:login_example/model/response/LoginDetailResponse.dart';
 
 part 'LoginResponse.g.dart';
 
@@ -6,20 +7,9 @@ part 'LoginResponse.g.dart';
 class LoginResponse {
   String success;
   String message;
-  int id;
-  String nama;
-  String email;
-  String notelp;
-  String role;
+  LoginDetailResponse data;
 
-  LoginResponse(
-      {this.success,
-      this.message,
-      this.id,
-      this.nama,
-      this.email,
-      this.notelp,
-      this.role});
+  LoginResponse({this.success, this.message, this.data});
 
   Map<String, dynamic> toJson() => _$LoginResponseToJson(this);
 

@@ -4,10 +4,10 @@ part 'RegisterResponse.g.dart';
 
 @JsonSerializable()
 class RegisterResponse {
-  String success;
   String message;
+  int code;
 
-  RegisterResponse({this.success, this.message});
+  RegisterResponse({this.message, this.code});
 
   Map<String, dynamic> toJson() => _$RegisterResponseToJson(this);
 
