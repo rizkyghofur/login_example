@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:login_example/bloc/AuthBloc.dart';
 import 'package:login_example/bloc/CRUDBloc.dart';
-import 'package:login_example/constants/URLConstants.dart';
 import 'package:login_example/model/response/GetDataResponse.dart';
 import 'package:login_example/page/AddDataPage.dart';
 import 'package:login_example/page/DetailPage.dart';
@@ -16,8 +15,7 @@ class DataScreenPage extends StatefulWidget {
   _DataScreenPageState createState() => new _DataScreenPageState();
 }
 
-class _DataScreenPageState extends State<DataScreenPage>
-    with AutomaticKeepAliveClientMixin {
+class _DataScreenPageState extends State<DataScreenPage> {
   final PreferencesUtil util = PreferencesUtil();
   final CrudBloc crudBloc = CrudBloc();
   final AuthBloc authBloc = AuthBloc();
@@ -26,7 +24,6 @@ class _DataScreenPageState extends State<DataScreenPage>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return Scaffold(
       appBar: AppBar(
         title: Text("Data from API"),
@@ -90,7 +87,7 @@ class _DataScreenPageState extends State<DataScreenPage>
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                DetailScreenPage(idMenu: list[index].id)),
+                                DetailScreenPage(idItem: list[index].id)),
                       );
                     },
                     child: Container(
@@ -192,7 +189,4 @@ class _DataScreenPageState extends State<DataScreenPage>
       ),
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

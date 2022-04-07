@@ -2,6 +2,8 @@ class UrlConstants {
   static const login = "https://e178-61-5-57-88.ngrok.io/api/login";
   static const register = "https://e178-61-5-57-88.ngrok.io/api/register";
   static const get_data = "https://e178-61-5-57-88.ngrok.io/api/list-produk";
+  static const get_data_by_id =
+      "https://e178-61-5-57-88.ngrok.io/api/show-produk/";
   static const add_data = "https://e178-61-5-57-88.ngrok.io/api/create-produk/";
   static const update_data =
       "https://e178-61-5-57-88.ngrok.io/api/update-produk/";

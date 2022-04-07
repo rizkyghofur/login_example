@@ -26,6 +26,19 @@ class CRUDRepository {
     }
   }
 
+  Future<GetDataResponse> getDatabyId(int id) async {
+    try {
+      Response response = await dio.get(UrlConstants.get_data_by_id + '$id');
+
+      var map = Map<String, dynamic>.from(response.data);
+      var fetchedResponse = GetDataResponse.fromJson(map);
+
+      return fetchedResponse;
+    } catch (error, stacktrace) {
+      throw Exception("Exception occured: $error stackTrace: $stacktrace");
+    }
+  }
+
   Future<AddDataResponse> addData(
       item_name, item_code, price, stock, foto_produk) async {
     try {

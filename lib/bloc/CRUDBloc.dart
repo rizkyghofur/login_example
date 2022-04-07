@@ -16,6 +16,14 @@ class CrudBloc {
     }
   }
 
+  Future<GetDataResponse> getDataById(int id) async {
+    try {
+      return crudRepository.getDatabyId(id);
+    } catch (e) {
+      return null;
+    }
+  }
+
   Future<AddDataResponse> addData(
       item_name, item_code, price, stock, foto_produk) async {
     try {
